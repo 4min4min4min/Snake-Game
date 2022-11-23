@@ -1,5 +1,6 @@
 import pygame
 from Snake import *
+from Food import Food
 
 pygame.init()
 bounds = (800, 800)
@@ -7,6 +8,7 @@ screen = pygame.display.set_mode(bounds)
 pygame.display.set_caption("Snake")
 block_size = 40
 snake = Snake(block_size, bounds)
+food = Food(block_size, bounds)
 
 running = True
 while running:
@@ -16,6 +18,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
     snake.move()
+    snake.snake_reached_food(food)
     keys = pygame.key.get_pressed()
     if keys[pygame.K_UP] or keys[pygame.K_w]:
         snake.way(Direction.UP)
@@ -30,5 +33,6 @@ while running:
 
     screen.fill((0,0,0))
     snake.draw(pygame,screen)
+    food.draw(pygame,screen)
     pygame.display.flip()
 

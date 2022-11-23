@@ -60,3 +60,12 @@ class Snake:
             self.direction = direction
         elif self.direction == Direction.RIGHT and direction != Direction.LEFT:
             self.direction = direction
+
+    def eat(self):
+        self.length += 1
+
+    def snake_reached_food(self, food):
+        head = self.body[-1]
+        if head[0] == food.x and head[1] == food.y:
+            self.eat()
+            food.respawn()
