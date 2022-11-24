@@ -9,6 +9,7 @@ pygame.display.set_caption("Snake")
 block_size = 40
 snake = Snake(block_size, bounds)
 food = Food(block_size, bounds)
+fonts = pygame.font.SysFont('comicsans', 40, True)
 
 running = True
 while running:
@@ -20,6 +21,18 @@ while running:
     snake.move()
     snake.snake_reached_food(food)
     keys = pygame.key.get_pressed()
+
+
+    # Условие на самопоедание всегда выдает True, поэтому игра крашится
+    if snake.check_bounds() == True or snake.snake_eats_itself() == True:
+        text = fonts.render('Game Over... To restart press ENTER', True, (255,255,255))
+        screen.blit(text,(400,400))
+        pygame.display.update()
+        pygame.time.delay(1000)
+        snake.respawn()
+        food.respawn()
+
+
     if keys[pygame.K_UP] or keys[pygame.K_w]:
         snake.way(Direction.UP)
     elif keys[pygame.K_LEFT] or keys[pygame.K_a]:

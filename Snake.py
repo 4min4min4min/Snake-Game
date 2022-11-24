@@ -69,3 +69,28 @@ class Snake:
         if head[0] == food.x and head[1] == food.y:
             self.eat()
             food.respawn()
+
+    def snake_eats_itself(self):
+        head = self.body[-1]
+        has_eaten_tail = False
+
+        for i in range(len(self.body) - 1):
+            part = self.body[i]
+            if head[0] == part[0] and head[1] == part[1]:
+                has_eaten_tail = True
+        return has_eaten_tail
+
+    def check_bounds(self):
+        head = self.body[-1]
+
+        if head[0] >= self.bounds[0]:
+            return True
+        if head[1] >= self.bounds[1]:
+            return True
+
+        if head[0] < 0:
+            return True
+        if head[1] < 0:
+            return True
+
+        return False
