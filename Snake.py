@@ -15,17 +15,20 @@ class Snake:
     block_size = None
     bounds = None
     color = (0, 49, 83)
+    score = None
 
 
-    def __init__(self, block_size, bounds):
+
+    def __init__(self, block_size, bounds, score):
         self.block_size = block_size
         self.bounds = bounds
         self.respawn()
+        self.score = score
 
 
     def respawn(self):
         self.length = 5
-        self.body = [(400, 400), (360, 400), (320, 400), (280, 400), (240, 400)]
+        self.body = [(240, 400), (280, 400), (320, 400), (360, 400), (400, 400)]
         self.direction = Direction.RIGHT
 
 
@@ -64,10 +67,12 @@ class Snake:
     def eat(self):
         self.length += 1
 
+
     def snake_reached_food(self, food):
         head = self.body[-1]
         if head[0] == food.x and head[1] == food.y:
             self.eat()
+            self.score +=1
             food.respawn()
 
     def snake_eats_itself(self):
@@ -78,6 +83,7 @@ class Snake:
             part = self.body[i]
             if head[0] == part[0] and head[1] == part[1]:
                 has_eaten_tail = True
+                break
         return has_eaten_tail
 
     def check_bounds(self):
