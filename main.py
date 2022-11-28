@@ -43,12 +43,6 @@ food = Food(block_size, bounds)
 fonts = pygame.font.SysFont('arial', 20, True)
 
 running = True
-'''text1 = fonts.render('Привет, Сяма', True, (255,255,255))
-text2 = fonts.render('Это Папа', True, (255,255,255))
-screen.blit(text1,(350,400))
-screen.blit(text2,(375,430))
-pygame.display.update()
-pygame.time.delay(5000)'''
 while running:
     pygame.time.delay(100)
 
