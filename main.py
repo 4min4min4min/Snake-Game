@@ -10,23 +10,17 @@ def gameover():
     game_over = fonts.render('GAME OVER', True, (255, 255, 255))
     screen.blit(game_over, (310, 300))
 def showrecord():
-    f = open('scores.txt', 'r')  # opens the file in read mode
-    file = f.readlines()  # reads all the lines in as a list
-    record = int(max(file))  # gets the first line of the file
+    f = open('scores.txt', 'r')
+    file = f.readlines()
+    record = int(max(file))
     f.close()
     your_record = fonts.render('Your record: ' + str(record), True, (255, 255, 255))
     screen.blit(your_record, (300, 350))
 
 def updateFile():
-    '''f = open('scores.txt', 'r')  # opens the file in read mode
-    file = f.readlines()  # reads all the lines in as a list
-    last = int(file[0])  # gets the first line of the file
-
-    if last < int(snake.score): # sees if the current score is greater than the previous best
-    f.close()'''  # closes/saves the file
-    file = open('scores.txt', 'a')  # reopens it in write mode
-    file.write(str(snake.score)+'\n')  # writes the best score
-    file.close()  # closes/saves the file
+    file = open('scores.txt', 'a')
+    file.write(str(snake.score)+'\n')
+    file.close()
 
 
 
@@ -64,12 +58,7 @@ while running:
 
     snake.move()
     snake.snake_reached_food(food)
-    # Условие на самопоедание всегда выдает True, поэтому игра крашится
     if snake.check_bounds() == True or snake.snake_eats_itself() == True:
-        #game_over = fonts.render('GAME OVER', True, (255,255,255))
-        #your_score = fonts.render('Your score: '+str(score), True, (255, 255, 255))
-        #screen.blit(game_over,(310,300))
-        #screen.blit(your_score, (300, 330))
         gameover()
         showscore()
         showrecord()
