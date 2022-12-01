@@ -1,21 +1,23 @@
 import pygame
-from datetime import date
-from Snake import *
-from Food import Food
+from snake import *
+from food import Food
 
-def showscore():
-    your_score = fonts.render('Your score: ' + str(snake.score), True, (255, 255, 255))
-    screen.blit(your_score, (300, 330))
 def gameover():
-    game_over = fonts.render('GAME OVER', True, (255, 255, 255))
-    screen.blit(game_over, (310, 300))
-def showrecord():
+    game_over_place = (300, 260)
+    your_score_place = (330, 350)
+    your_record_place = (330, 400)
     f = open('scores.txt', 'r')
     file = f.readlines()
     record = int(max(file))
     f.close()
-    your_record = fonts.render('Your record: ' + str(record), True, (255, 255, 255))
-    screen.blit(your_record, (300, 350))
+    game_over = gg_fonts.render('GAME OVER', True, (255, 255, 255))
+    your_score = fonts.render('Your Score:  '+str(snake.score), True, (255, 255, 255))
+    your_record = fonts.render('Your Record:  '+str(record), True, (255, 255, 255))
+    screen.blit(game_over, game_over_place)
+    screen.blit(your_score, your_score_place)
+    screen.blit(your_record, your_record_place)
+
+
 
 def updateFile():
     file = open('scores.txt', 'a')
@@ -30,19 +32,30 @@ pygame.init()
 score = 0
 bounds = (800, 800)
 screen = pygame.display.set_mode(bounds)
+icon = pygame.image.load('snake.png')
 pygame.display.set_caption("Snake")
+pygame.display.set_icon(icon)
 block_size = 40
 snake = Snake(block_size, bounds, score)
 food = Food(block_size, bounds)
-fonts = pygame.font.SysFont('arial', 20, True)
+fonts = pygame.font.SysFont('8-BIT WONDER', 30, True)
+gg_fonts = pygame.font.SysFont('8-BIT WONDER', 45, True)
+pause_text = gg_fonts.render('PRESS ENTER TO CONTINUE', True, (255,255,255))
 
+playing, pause = True, False
 running = True
+state = playing
 while running:
     pygame.time.delay(100)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                state = pause
+            if event.key == pygame.K_RETURN:
+                state = playing
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_UP] or keys[pygame.K_w]:
@@ -54,24 +67,25 @@ while running:
     elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
         snake.way(Direction.RIGHT)
     if keys[pygame.K_ESCAPE]:
-        pygame.event.post(pygame.event.Event(pygame.QUIT))
+        running = False
 
-    snake.move()
-    snake.snake_reached_food(food)
-    if snake.check_bounds() == True or snake.snake_eats_itself() == True:
-        gameover()
-        showscore()
-        showrecord()
-        updateFile()
-        pygame.display.update()
-        pygame.time.delay(1500)
-        snake.score = 0
-        snake.respawn()
-        food.respawn()
+    if state == playing:
+        snake.move()
+        snake.snake_reached_food(food)
+        if snake.check_bounds() == True or snake.snake_eats_itself() == True:
+            gameover()
+            updateFile()
+            pygame.display.update()
+            pygame.time.delay(1500)
+            snake.score = 0
+            snake.respawn()
+            food.respawn()
 
-    screen.fill((0,0,0))
-    snake.draw(pygame,screen)
-    food.draw(pygame,screen)
+        screen.fill((0,0,0))
+        snake.draw(pygame,screen)
+        food.draw(pygame,screen)
+    elif state == pause:
+        screen.blit(pause_text,(150,260))
     pygame.display.flip()
 
 
