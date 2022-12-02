@@ -1,4 +1,5 @@
 import pygame
+from pygame import mixer
 from snake import *
 from food import Food
 
@@ -29,6 +30,10 @@ def updateFile():
 
 
 pygame.init()
+mixer.init()
+mixer.music.load('mainsong.ogg')
+mixer.music.set_volume(0.7)
+mixer.music.play(100)
 score = 0
 bounds = (800, 800)
 screen = pygame.display.set_mode(bounds)
@@ -70,6 +75,7 @@ while running:
         running = False
 
     if state == playing:
+        mixer.music.unpause()
         snake.move()
         snake.snake_reached_food(food)
         if snake.check_bounds() == True or snake.snake_eats_itself() == True:
@@ -85,6 +91,7 @@ while running:
         snake.draw(pygame,screen)
         food.draw(pygame,screen)
     elif state == pause:
+        mixer.music.pause()
         screen.blit(pause_text,(150,260))
     pygame.display.flip()
 
