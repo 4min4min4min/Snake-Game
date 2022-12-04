@@ -11,8 +11,9 @@ class Food:
         self.block_size = block_size
         self.bounds = bounds
 
-    def draw (self, pygame, screen):
-        pygame.draw.rect(screen, self.color, (self.x, self.y, self.block_size, self.block_size))
+    def draw (self, pygame, screen, apple):
+        #pygame.draw.rect(screen, self.color, (self.x, self.y, self.block_size, self.block_size))
+        screen.blit(apple, (self.x, self.y, self.block_size, self.block_size))
 
     def respawn(self):
         blocks_in_x = (self.bounds[0])/self.block_size

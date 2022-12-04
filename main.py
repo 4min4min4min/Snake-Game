@@ -30,19 +30,30 @@ def updateFile():
 
 
 pygame.init()
+
+#music
 mixer.init()
 mixer.music.load('mainsong.ogg')
-mixer.music.set_volume(0.7)
+mixer.music.set_volume(0.5)
 mixer.music.play(100)
+
+#clases parameters
 score = 0
 bounds = (800, 800)
+block_size = 40
+
+#visual
 screen = pygame.display.set_mode(bounds)
 icon = pygame.image.load('snake.png')
 pygame.display.set_caption("Snake")
 pygame.display.set_icon(icon)
-block_size = 40
+apple = pygame.image.load('apple.png').convert_alpha()
+
+#classes
 snake = Snake(block_size, bounds, score)
 food = Food(block_size, bounds)
+
+#fonts
 fonts = pygame.font.SysFont('8-BIT WONDER', 30, True)
 gg_fonts = pygame.font.SysFont('8-BIT WONDER', 45, True)
 pause_text = gg_fonts.render('PRESS ENTER TO CONTINUE', True, (255,255,255))
@@ -80,7 +91,8 @@ while running:
         snake.snake_reached_food(food)
         if snake.check_bounds() == True or snake.snake_eats_itself() == True:
             gameover()
-            updateFile()
+            if snake.score > 0:
+                updateFile()
             pygame.display.update()
             pygame.time.delay(1500)
             snake.score = 0
@@ -89,7 +101,7 @@ while running:
 
         screen.fill((0,0,0))
         snake.draw(pygame,screen)
-        food.draw(pygame,screen)
+        food.draw(pygame,screen,apple)
     elif state == pause:
         mixer.music.pause()
         screen.blit(pause_text,(150,260))
