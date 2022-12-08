@@ -26,12 +26,38 @@ def updateFile():
     file.close()
 
 
+def draw_grass():
+    grass_color1 = (167,209,61)
+    grass_color2 = (175,215,70)
+    for row in range(20):
+        if row % 2 == 0:
+            for col in range(20):
+                if col % 2 == 0:
+                    grass_rect = pygame.Rect(col * block_size, row * block_size, block_size, block_size)
+                    pygame.draw.rect(screen, grass_color1, grass_rect)
+        else:
+            for col in range(20):
+                if col % 2 != 0:
+                    grass_rect = pygame.Rect(col * block_size, row * block_size, block_size, block_size)
+                    pygame.draw.rect(screen, grass_color1, grass_rect)
+    for row in range(20):
+        if row % 2 == 0:
+            for col in range(20):
+                if col % 2 == 1:
+                    grass_rect = pygame.Rect(col * block_size, row * block_size, block_size, block_size)
+                    pygame.draw.rect(screen, grass_color2, grass_rect)
+        else:
+            for col in range(20):
+                if col % 2 != 1:
+                    grass_rect = pygame.Rect(col * block_size, row * block_size, block_size, block_size)
+                    pygame.draw.rect(screen, grass_color2, grass_rect)
+
 
 
 
 pygame.init()
 
-#music
+#music and sounds
 mixer.init()
 mixer.music.load('mainsong.ogg')
 mixer.music.set_volume(0.5)
@@ -100,6 +126,7 @@ while running:
             food.respawn()
 
         screen.fill((0,0,0))
+        draw_grass()
         snake.draw(pygame,screen)
         food.draw(pygame,screen,apple)
     elif state == pause:
