@@ -25,23 +25,23 @@ class Snake:
         self.respawn()
         self.score = score
 
-        self.head_up = pygame.image.load('../res/head_up.png').convert_alpha()
-        self.head_down = pygame.image.load('../res/head_down.png').convert_alpha()
-        self.head_right = pygame.image.load('../res/head_right.png').convert_alpha()
-        self.head_left = pygame.image.load('../res/head_left.png').convert_alpha()
+        self.head_up = pygame.image.load('res/head_up.png').convert_alpha()
+        self.head_down = pygame.image.load('res/head_down.png').convert_alpha()
+        self.head_right = pygame.image.load('res/head_right.png').convert_alpha()
+        self.head_left = pygame.image.load('res/head_left.png').convert_alpha()
 
-        self.tail_up = pygame.image.load('../res/tail_up.png').convert_alpha()
-        self.tail_down = pygame.image.load('../res/tail_down.png').convert_alpha()
-        self.tail_right = pygame.image.load('../res/tail_right.png').convert_alpha()
-        self.tail_left = pygame.image.load('../res/tail_left.png').convert_alpha()
+        self.tail_up = pygame.image.load('res/tail_up.png').convert_alpha()
+        self.tail_down = pygame.image.load('res/tail_down.png').convert_alpha()
+        self.tail_right = pygame.image.load('res/tail_right.png').convert_alpha()
+        self.tail_left = pygame.image.load('res/tail_left.png').convert_alpha()
 
-        self.body_vertical = pygame.image.load('../res/body_vertical.png').convert_alpha()
-        self.body_horizontal = pygame.image.load('../res/body_horizontal.png').convert_alpha()
+        self.body_vertical = pygame.image.load('res/body_vertical.png').convert_alpha()
+        self.body_horizontal = pygame.image.load('res/body_horizontal.png').convert_alpha()
 
-        self.body_tr = pygame.image.load('../res/body_tr.png').convert_alpha()
-        self.body_tl = pygame.image.load('../res/body_tl.png').convert_alpha()
-        self.body_br = pygame.image.load('../res/body_br.png').convert_alpha()
-        self.body_bl = pygame.image.load('../res/body_bl.png').convert_alpha()
+        self.body_tr = pygame.image.load('res/body_tr.png').convert_alpha()
+        self.body_tl = pygame.image.load('res/body_tl.png').convert_alpha()
+        self.body_br = pygame.image.load('res/body_br.png').convert_alpha()
+        self.body_bl = pygame.image.load('res/body_bl.png').convert_alpha()
 
     def respawn(self):
         self.length = 5

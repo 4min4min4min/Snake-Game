@@ -8,7 +8,7 @@ def gameover():
     game_over_place = (300, 260)
     your_score_place = (330, 350)
     your_record_place = (330, 400)
-    f = open('../res/scores.txt', 'r')
+    f = open('res/scores.txt', 'r')
     file = f.readlines()
     record = int(max(file))
     f.close()
@@ -21,7 +21,7 @@ def gameover():
 
 
 def updateFile():
-    file = open('../res/scores.txt', 'a')
+    file = open('res/scores.txt', 'a')
     file.write(str(snake.score) + '\n')
     file.close()
 
@@ -51,10 +51,10 @@ block_size = 40
 
 # visual
 screen = pygame.display.set_mode(bounds)
-icon = pygame.image.load('../res/snake.png')
+icon = pygame.image.load('res/snake.png')
 pygame.display.set_caption("Snake")
 pygame.display.set_icon(icon)
-apple = pygame.image.load('../res/apple.png').convert_alpha()
+apple = pygame.image.load('res/apple.png').convert_alpha()
 
 # classes
 snake = Snake(block_size, bounds, score)
