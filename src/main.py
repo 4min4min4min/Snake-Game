@@ -1,7 +1,7 @@
-import pygame
 from pygame import mixer
-from snake import *
+
 from food import Food
+from snake import *
 
 
 def gameover():
@@ -20,7 +20,7 @@ def gameover():
     screen.blit(your_record, your_record_place)
 
 
-def updateFile():
+def update_file():
     file = open('res/scores.txt', 'a')
     file.write(str(snake.score) + '\n')
     file.close()
@@ -81,26 +81,86 @@ def draw_menu(current_item):
     screen.blit(continue_text, (x_coord, y_coord))
     y_coord += y_offset
 
-    champions = gg_fonts.render('Champions', True, red if current_item == 1 else white)
+    options = gg_fonts.render('Options', True, red if current_item == 1 else white)
+    screen.blit(options, (x_coord, y_coord))
+    y_coord += y_offset
+
+    champions = gg_fonts.render('Champions', True, red if current_item == 2 else white)
     screen.blit(champions, (x_coord, y_coord))
     y_coord += y_offset
 
-    exit = gg_fonts.render('Exit', True, red if current_item == 2 else white)
+    exit = gg_fonts.render('Exit', True, red if current_item == 3 else white)
     screen.blit(exit, (x_coord, y_coord))
     y_coord += y_offset
 
 
+def draw_options(current_item):
+    red = (255, 0, 0)
+    white = (255, 255, 255)
+
+    x_coord = 150
+    y_coord = 260
+    y_offset = 60
+    difficulty_level = gg_fonts.render('Difficult', True, red if current_item == 0 else white)
+    screen.blit(difficulty_level, (x_coord, y_coord))
+    y_coord += y_offset
+
+    volume_text = gg_fonts.render('Volume', True, red if current_item == 1 else white)
+    screen.blit(volume_text, (x_coord, y_coord))
+    y_coord += y_offset
+
+    back_text = gg_fonts.render('Back', True, red if current_item == 2 else white)
+    screen.blit(back_text, (x_coord, y_coord))
+    y_coord += y_offset
+
+
+'''def options():
+    global difficult, running, menu_running, keys
+    mixer.music.pause()
+    options_running = True
+    current_item = 0
+    max_items = 3
+    while options_running:
+        pygame.time.delay(100)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                menu_running = True
+                options_running = False
+        keys = pygame.key.get_pressed()
+        screen.fill((0, 0, 0))
+        elif keys[pygame.K_DOWN]:
+            current_item += 1
+            current_item %= max_items
+        elif keys[pygame.K_UP]:
+            current_item -= 1
+            current_item %= max_items
+        elif keys[pygame.K_ESCAPE]:
+            options_running = False
+        elif keys[pygame.K_RETURN]:
+            if current_item == 0:
+                menu_running = False
+            elif current_item == 1:
+                pass
+            elif current_item == 2:
+                pass
+            elif current_item == 3:
+                running = False
+                menu_running = False
+
+        draw_options(current_item)
+        pygame.display.flip()'''
+
 def menu():
-    global running, state, playing, pause, food, apple, mixer
+    global running, state, playing, pause, food, apple
     mixer.music.pause()
     menu_running = True
     current_item = 0
-    max_items = 3
+    max_items = 4
     while menu_running:
         pygame.time.delay(100)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
+                running = True
                 menu_running = False
 
         keys = pygame.key.get_pressed()
@@ -120,16 +180,19 @@ def menu():
             if current_item == 0:
                 menu_running = False
             elif current_item == 1:
-                running = False
-                menu_running = False
+                pass
             elif current_item == 2:
                 pass
+            elif current_item == 3:
+                running = False
+                menu_running = False
 
         draw_menu(current_item)
         pygame.display.flip()
 
+
 while running:
-    pygame.time.delay(100)
+    difficult = pygame.time.delay(100)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -144,21 +207,19 @@ while running:
         snake.way(Direction.DOWN)
     elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
         snake.way(Direction.RIGHT)
-    if keys[pygame.K_ESCAPE]:
-        running = False
     if keys[pygame.K_RETURN]:
         state = playing
-    if keys[pygame.K_SPACE]:
+    if keys[pygame.K_SPACE] or keys[pygame.K_ESCAPE]:
         menu()
 
     if state == playing:
         mixer.music.unpause()
         snake.move()
         snake.snake_reached_food(food)
-        if snake.check_bounds() == True or snake.snake_eats_itself() == True:
+        if snake.check_bounds() or snake.snake_eats_itself():
             gameover()
             if snake.score > 0:
-                updateFile()
+                update_file()
             pygame.display.update()
             pygame.time.delay(1500)
             snake.score = 0

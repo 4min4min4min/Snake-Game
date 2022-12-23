@@ -20,6 +20,8 @@ class Snake:
     score = None
 
     def __init__(self, block_size, bounds, score):
+        self.tail = None
+        self.head = None
         self.block_size = block_size
         self.bounds = bounds
         self.respawn()
