@@ -63,7 +63,6 @@ food = Food(block_size, bounds)
 # fonts
 fonts = pygame.font.SysFont('8-BIT WONDER', 30, True)
 gg_fonts = pygame.font.SysFont('8-BIT WONDER', 45, True)
-pause_text = gg_fonts.render('PRESS ENTER TO CONTINUE', True, (255, 255, 255))
 
 playing, pause = True, False
 running = True
@@ -94,31 +93,41 @@ def draw_menu(current_item):
     y_coord += y_offset
 
 
-def draw_options(current_item):
+def draw_options(selected_item):
     red = (255, 0, 0)
     white = (255, 255, 255)
 
     x_coord = 150
     y_coord = 260
     y_offset = 60
-    difficulty_level = gg_fonts.render('Difficult', True, red if current_item == 0 else white)
+    x_offset = 260
+    difficulty_level = gg_fonts.render('Difficult', True, red if selected_item == 0 else white)
     screen.blit(difficulty_level, (x_coord, y_coord))
+    x_coord += x_offset
+    difficulty_regime = gg_fonts.render('Medium', True, red if selected_item == 0 else white)
+    screen.blit(difficulty_regime, (x_coord, y_coord))
     y_coord += y_offset
+    x_coord -= x_offset
 
-    volume_text = gg_fonts.render('Volume', True, red if current_item == 1 else white)
+
+    volume_text = gg_fonts.render('Volume', True, red if selected_item == 1 else white)
     screen.blit(volume_text, (x_coord, y_coord))
+    x_coord += x_offset
+    volume_regime = gg_fonts.render('100', True, red if selected_item == 1 else white)
+    screen.blit(volume_regime, (x_coord, y_coord))
     y_coord += y_offset
+    x_coord -= x_offset
 
-    back_text = gg_fonts.render('Back', True, red if current_item == 2 else white)
+    back_text = gg_fonts.render('Back', True, red if selected_item == 2 else white)
     screen.blit(back_text, (x_coord, y_coord))
     y_coord += y_offset
 
 
-'''def options():
-    global difficult, running, menu_running, keys
+def options():
+    global difficult, running, menu_running, keys1
     mixer.music.pause()
     options_running = True
-    current_item = 0
+    selected_item = 0
     max_items = 3
     while options_running:
         pygame.time.delay(100)
@@ -126,29 +135,33 @@ def draw_options(current_item):
             if event.type == pygame.QUIT:
                 menu_running = True
                 options_running = False
-        keys = pygame.key.get_pressed()
+        keys1 = pygame.key.get_pressed()
         screen.fill((0, 0, 0))
-        elif keys[pygame.K_DOWN]:
-            current_item += 1
-            current_item %= max_items
-        elif keys[pygame.K_UP]:
-            current_item -= 1
-            current_item %= max_items
-        elif keys[pygame.K_ESCAPE]:
+        if keys1[pygame.K_DOWN]:
+            selected_item += 1
+            selected_item %= max_items
+        elif keys1[pygame.K_UP]:
+            selected_item -= 1
+            selected_item %= max_items
+        elif keys1[pygame.K_ESCAPE]:
             options_running = False
-        elif keys[pygame.K_RETURN]:
-            if current_item == 0:
-                menu_running = False
-            elif current_item == 1:
+            menu_running = True
+        elif keys1[pygame.K_RETURN]:
+            if selected_item == 0:
                 pass
-            elif current_item == 2:
+            elif selected_item == 1:
                 pass
-            elif current_item == 3:
-                running = False
-                menu_running = False
+            elif selected_item == 2:
+                options_running = False
+                menu_running = True
+        elif keys1[pygame.K_LEFT]:
+            if selected_item == 0:
+                pass
+            elif selected_item == 1:
+                pass
 
-        draw_options(current_item)
-        pygame.display.flip()'''
+        draw_options(selected_item)
+        pygame.display.flip()
 
 def menu():
     global running, state, playing, pause, food, apple
@@ -180,7 +193,7 @@ def menu():
             if current_item == 0:
                 menu_running = False
             elif current_item == 1:
-                pass
+                options()
             elif current_item == 2:
                 pass
             elif current_item == 3:
@@ -198,18 +211,18 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_UP] or keys[pygame.K_w]:
+    keys1 = pygame.key.get_pressed()
+    if keys1[pygame.K_UP] or keys1[pygame.K_w]:
         snake.way(Direction.UP)
-    elif keys[pygame.K_LEFT] or keys[pygame.K_a]:
+    elif keys1[pygame.K_LEFT] or keys1[pygame.K_a]:
         snake.way(Direction.LEFT)
-    elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
+    elif keys1[pygame.K_DOWN] or keys1[pygame.K_s]:
         snake.way(Direction.DOWN)
-    elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+    elif keys1[pygame.K_RIGHT] or keys1[pygame.K_d]:
         snake.way(Direction.RIGHT)
-    if keys[pygame.K_RETURN]:
+    if keys1[pygame.K_RETURN]:
         state = playing
-    if keys[pygame.K_SPACE] or keys[pygame.K_ESCAPE]:
+    if keys1[pygame.K_SPACE] or keys1[pygame.K_ESCAPE]:
         menu()
 
     if state == playing:
@@ -230,7 +243,4 @@ while running:
         draw_grass()
         snake.draw(pygame, screen)
         food.draw(pygame, screen, apple)
-    elif state == pause:
-        mixer.music.pause()
-        screen.blit(pause_text, (150, 260))
     pygame.display.flip()
