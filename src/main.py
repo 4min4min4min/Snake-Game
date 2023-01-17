@@ -38,10 +38,16 @@ def draw_grass():
 
 pygame.init()
 
+# game settings
+complexity = 'Medium'
+snake_speed = 100
+volume = 0.5
+volume_value = 100
+
 # music and sounds
 mixer.init()
 mixer.music.load('res/mainsong.ogg')
-mixer.music.set_volume(0.5)
+mixer.music.set_volume(volume)
 mixer.music.play(100)
 
 # classes parameters
@@ -61,8 +67,8 @@ snake = Snake(block_size, bounds, score)
 food = Food(block_size, bounds)
 
 # fonts
-fonts = pygame.font.SysFont('8-BIT WONDER', 30, True)
-gg_fonts = pygame.font.SysFont('8-BIT WONDER', 45, True)
+fonts = pygame.font.Font('Game Font.ttf', 30)
+gg_fonts = pygame.font.Font('Game Font Bold.ttf', 45)
 
 playing, pause = True, False
 running = True
@@ -80,8 +86,8 @@ def draw_menu(current_item):
     screen.blit(continue_text, (x_coord, y_coord))
     y_coord += y_offset
 
-    options = gg_fonts.render('Options', True, red if current_item == 1 else white)
-    screen.blit(options, (x_coord, y_coord))
+    options_menu = gg_fonts.render('Options', True, red if current_item == 1 else white)
+    screen.blit(options_menu, (x_coord, y_coord))
     y_coord += y_offset
 
     champions = gg_fonts.render('Champions', True, red if current_item == 2 else white)
@@ -94,6 +100,7 @@ def draw_menu(current_item):
 
 
 def draw_options(selected_item):
+    global complexity, volume_value
     red = (255, 0, 0)
     white = (255, 255, 255)
 
@@ -104,16 +111,15 @@ def draw_options(selected_item):
     difficulty_level = gg_fonts.render('Difficult', True, red if selected_item == 0 else white)
     screen.blit(difficulty_level, (x_coord, y_coord))
     x_coord += x_offset
-    difficulty_regime = gg_fonts.render('Medium', True, red if selected_item == 0 else white)
+    difficulty_regime = gg_fonts.render(complexity, True, red if selected_item == 0 else white)
     screen.blit(difficulty_regime, (x_coord, y_coord))
     y_coord += y_offset
     x_coord -= x_offset
 
-
     volume_text = gg_fonts.render('Volume', True, red if selected_item == 1 else white)
     screen.blit(volume_text, (x_coord, y_coord))
     x_coord += x_offset
-    volume_regime = gg_fonts.render('100', True, red if selected_item == 1 else white)
+    volume_regime = gg_fonts.render(str(volume_value), True, red if selected_item == 1 else white)
     screen.blit(volume_regime, (x_coord, y_coord))
     y_coord += y_offset
     x_coord -= x_offset
@@ -124,28 +130,31 @@ def draw_options(selected_item):
 
 
 def options():
-    global difficult, running, menu_running, keys1
+    global snake_speed, running, keys1, complexity, volume, volume_value
     mixer.music.pause()
     options_running = True
     selected_item = 0
     max_items = 3
     while options_running:
         pygame.time.delay(100)
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                menu_running = True
-                options_running = False
         keys1 = pygame.key.get_pressed()
         screen.fill((0, 0, 0))
+
+        for events in pygame.event.get():
+            if events.type == pygame.QUIT:
+                options_running = False
+
         if keys1[pygame.K_DOWN]:
             selected_item += 1
             selected_item %= max_items
+
         elif keys1[pygame.K_UP]:
             selected_item -= 1
             selected_item %= max_items
+
         elif keys1[pygame.K_ESCAPE]:
             options_running = False
-            menu_running = True
+
         elif keys1[pygame.K_RETURN]:
             if selected_item == 0:
                 pass
@@ -153,15 +162,44 @@ def options():
                 pass
             elif selected_item == 2:
                 options_running = False
-                menu_running = True
+
         elif keys1[pygame.K_LEFT]:
             if selected_item == 0:
-                pass
+                if complexity == 'Medium':
+                    complexity = 'Easy'
+                    snake_speed = 140
+                elif complexity == 'Hard':
+                    complexity = 'Medium'
+                    snake_speed = 100
+                elif complexity == 'Easy':
+                    pass
             elif selected_item == 1:
-                pass
+                if volume_value == 0:
+                    pass
+                else:
+                    volume -= 0.02
+                    volume_value -= 1
+
+        elif keys1[pygame.K_RIGHT]:
+            if selected_item == 0:
+                if complexity == 'Medium':
+                    complexity = 'Hard'
+                    snake_speed = 80
+                elif complexity == 'Easy':
+                    complexity = 'Medium'
+                    snake_speed = 100
+                elif complexity == 'Hard':
+                    pass
+            elif selected_item == 1:
+                if volume_value == 100:
+                    pass
+                else:
+                    volume += 0.02
+                    volume_value += 1
 
         draw_options(selected_item)
         pygame.display.flip()
+
 
 def menu():
     global running, state, playing, pause, food, apple
@@ -171,8 +209,8 @@ def menu():
     max_items = 4
     while menu_running:
         pygame.time.delay(100)
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+        for events in pygame.event.get():
+            if events.type == pygame.QUIT:
                 running = True
                 menu_running = False
 
@@ -205,7 +243,7 @@ def menu():
 
 
 while running:
-    difficult = pygame.time.delay(100)
+    game_difficult = pygame.time.delay(snake_speed)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
