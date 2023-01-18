@@ -46,7 +46,7 @@ volume_value = 100
 
 # music and sounds
 mixer.init()
-mixer.music.load('res/mainsong.ogg')
+mixer.music.load('res/sounds/mainsong.ogg')
 mixer.music.set_volume(volume)
 mixer.music.play(100)
 
@@ -57,18 +57,18 @@ block_size = 40
 
 # visual
 screen = pygame.display.set_mode(bounds)
-icon = pygame.image.load('res/snake.png')
+icon = pygame.image.load('res/graphics/snake.png')
 pygame.display.set_caption("Snake")
 pygame.display.set_icon(icon)
-apple = pygame.image.load('res/apple.png').convert_alpha()
+apple = pygame.image.load('res/graphics/apple.png').convert_alpha()
 
 # classes
 snake = Snake(block_size, bounds, score)
 food = Food(block_size, bounds)
 
 # fonts
-fonts = pygame.font.Font('Game Font.ttf', 30)
-gg_fonts = pygame.font.Font('Game Font Bold.ttf', 45)
+fonts = pygame.font.Font('res/fonts/Game Font.ttf', 30)
+gg_fonts = pygame.font.Font('res/fonts/Game Font Bold.ttf', 45)
 
 playing, pause = True, False
 running = True
