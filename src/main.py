@@ -61,6 +61,9 @@ icon = pygame.image.load('res/graphics/snake.png')
 pygame.display.set_caption("Snake")
 pygame.display.set_icon(icon)
 apple = pygame.image.load('res/graphics/apple.png').convert_alpha()
+blueberry = pygame.image.load('res/graphics/blueberry.png').convert_alpha()
+lemon = pygame.image.load('res/graphics/lemon.png').convert_alpha()
+cherry = pygame.image.load('res/graphics/cherry.png').convert_alpha()
 
 # classes
 snake = Snake(block_size, bounds, score)
@@ -280,5 +283,5 @@ while running:
         screen.fill((0, 0, 0))
         draw_grass()
         snake.draw(pygame, screen)
-        food.draw(pygame, screen, apple)
+        food.draw(screen, apple, blueberry, cherry, lemon)
     pygame.display.flip()
